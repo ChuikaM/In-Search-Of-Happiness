@@ -4,13 +4,10 @@ public class Target : MonoBehaviour
 {
     [SerializeField] private int health;
     [SerializeField] private int protection;
-    public float Speed = 3f;
-    public int Health { get { return health; } }
-    public enum Team {Blue, Red};
-    public Team team;
+    [SerializeField] private float speed;
 
-    public System.Action OnTeamChanged;
-    public System.Action<Team> OnDead;
+    public float Speed => speed;
+    public int Health => health;
 
     private int maxHealth;
     private int maxProtection;
@@ -22,6 +19,7 @@ public class Target : MonoBehaviour
         maxProtection = protection;
         maxSpeed = Speed;
     }
+
     public void TakeDamage(int damage)
     {
         if (protection > 0)
@@ -30,16 +28,6 @@ public class Target : MonoBehaviour
             return;
         }
         health -= damage;
-        
-        
-        if(health < 0.3 * maxHealth && !IsDead())
-        {
-            gameObject.GetComponent<Animator>().SetBool("Lowing", true);
-        }
-        else if(!IsDead())
-        {
-            gameObject.GetComponent<Animator>().SetTrigger("OnInjure");
-        }
 
         if(IsDead())
         {
@@ -51,72 +39,51 @@ public class Target : MonoBehaviour
     {
         protection = 0;
         health = 0;
-
-        switch(team)
-        {
-            case Team.Blue:
-                ++GameStatsManager.KillsOfRed;
-                ++GameStatsManager.DeathesOfBlue;
-                break;
-            case Team.Red:
-                ++GameStatsManager.KillsOfBlue;
-                ++GameStatsManager.DeathesOfRed;
-                break;
-        }
-
-        OnDead?.Invoke(team);
     }
 
-    public void WearBroofBulletWest()
+    public void SetProtectionToMax()
     {
         protection = maxProtection;
     }
 
-    public void RegenerateHealth()
+    public void SetHealthToMax()
     {
         health = maxHealth;
     }
-
-    public void Heal(int count)
+    public void SetSpeedToMax()
     {
-        if(health + count <= maxHealth)
-        {
-            health += count;
-        }
-        if (health > 0.3 * maxHealth)
-        {
-            gameObject.GetComponent<Animator>().SetBool("Lowing", false);
-        }
+        speed = maxSpeed;
     }
 
-    public void EnlargeSpeed(float count)
+    public void Heal(int healCount)
     {
-        if(count < 0)
+        if(healCount < 0)
         {
             return;
         }
 
-        if(maxSpeed + count > Speed)
+        if(health + healCount <= maxHealth)
         {
-            Speed += count;
+            health += healCount;
+        }
+    }
+
+    public void EnlargeSpeed(float speedCount)
+    {
+        if(speedCount < 0)
+        {
+            return;
+        }
+
+        if(maxSpeed + speedCount > Speed)
+        {
+            speed += speedCount;
         }      
     }
 
-    public void ReturnSpeed()
-    {
-        Speed = maxSpeed;
-    }
 
     public bool IsDead()
     {
         return health <= 0;
-    }
-
-  
-
-    public void SetTeam(Team team)
-    {
-        this.team = team;
-        OnTeamChanged?.Invoke();
     }
 }
