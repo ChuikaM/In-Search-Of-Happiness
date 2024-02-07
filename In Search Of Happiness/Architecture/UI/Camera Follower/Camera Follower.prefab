@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4670528030931767367}
   - component: {fileID: 1834361876335721792}
   - component: {fileID: 4063744973628279713}
-  - component: {fileID: 5188291894626126535}
+  - component: {fileID: 9077002043438880235}
   m_Layer: 0
   m_Name: Camera Follower
   m_TagString: MainCamera
@@ -93,7 +93,7 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4884822639007536879}
   m_Enabled: 1
---- !u!114 &5188291894626126535
+--- !u!114 &9077002043438880235
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,13 +102,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4884822639007536879}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8efe1c392acb74efb99498d8e0ee1c2, type: 3}
+  m_Script: {fileID: 11500000, guid: 5e9b4303e581e034599eb4a55cbf3594, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 0}
-  Z: -9
-  Speed: 1.5
-  Resizable: 1
-  minOrhtographicDistance: 3
-  sensetivity: 0.5
+  Z: 0
+  Speed: 0
+  Resizable: 0
+  minOrhtographicDistance: 1
+  sensetivity: 1
   maxOrthographicSize: 10

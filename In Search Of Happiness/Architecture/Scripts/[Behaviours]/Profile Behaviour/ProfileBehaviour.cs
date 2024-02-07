@@ -9,7 +9,7 @@ public class ProfileBehaviour : MonoBehaviour
 
 	private void OnEnable()
 	{
-		SettingsManagerIdentity = GameObject.FindObjectOfType<SettingsManager>();
+		SettingsManagerIdentity = FindObjectOfType<SettingsManager>();
         Load();
 	}
 
