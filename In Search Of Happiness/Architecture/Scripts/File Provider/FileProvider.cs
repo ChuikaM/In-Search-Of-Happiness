@@ -6,12 +6,12 @@ public class FileProvider
 {
     public static string DefaultApplicationPersistentDataPath = Application.persistentDataPath + "/";
 
-    public static void SaveObjectToJSONFile<T>(T data, string path)
+    public static void SaveObjectToJSONFile<T>(T data, string path, FileMode filemode = FileMode.Create)
     {
         FileStream fs = null;
         try
         {
-            fs = new FileStream(DefaultApplicationPersistentDataPath + path, FileMode.Create);
+            fs = new FileStream(DefaultApplicationPersistentDataPath + path, filemode);
             string jsonFile = JsonUtility.ToJson(data);
             BinaryFormatter bf = new BinaryFormatter();
             bf.Serialize(fs, jsonFile);        
@@ -22,7 +22,10 @@ public class FileProvider
         }
         finally
         {
-            fs.Close();
+            if (fs != null)
+            {
+                fs.Close();
+            }
         }
     }
 
@@ -46,7 +49,10 @@ public class FileProvider
             }
             finally
             {
-                fs.Close();
+                if (fs != null)
+                {
+                    fs.Close();
+                }
             }
         } 
         return "";
@@ -71,13 +77,13 @@ public class FileProvider
         return File.Exists(DefaultApplicationPersistentDataPath + file);
     }
 
-    public static void SaveToBFFile<T>(T data, string path)
+    public static void SaveToBFFile<T>(T data, string path, FileMode filemode = FileMode.Create)
     {
         FileStream fs = null;
         try
         {
             BinaryFormatter bf = new BinaryFormatter();
-            fs = new FileStream(DefaultApplicationPersistentDataPath + path, FileMode.Create);
+            fs = new FileStream(DefaultApplicationPersistentDataPath + path, filemode);
             bf.Serialize(fs,data);
             fs.Close();
         }
@@ -87,7 +93,10 @@ public class FileProvider
         }
         finally
         {
-            fs.Close();
+            if (fs != null)
+            {
+                fs.Close();
+            }
         }
     }
 
@@ -108,7 +117,10 @@ public class FileProvider
         }
         finally
         {
-            fs.Close();
+            if (fs != null)
+            {
+                fs.Close();
+            }
         }
         
         return default;

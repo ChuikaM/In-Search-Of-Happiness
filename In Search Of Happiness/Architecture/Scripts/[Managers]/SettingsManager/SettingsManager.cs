@@ -4,33 +4,38 @@ using UnityEngine.Localization.Settings;
 
 public class SettingsManager : MonoBehaviour
 {
-	public static SettingsManager SettingsManagerIdentity;
+	public static SettingsManager Identity;
     public Settings SavedSettings;
     public Settings DefaultSettings;
 
     [SerializeField] private AudioMixerGroup AudioMixer;
-    public GameObject FPSLabel { get; private set; }
-
-    private void Start()
-    {
-        FPSLabel = GameObject.Find("FPS Label");
-        if(FPSLabel != null )
-        {
-            FPSLabel.SetActive(SavedSettings.ShowFPS);
-        }
-    }
 
     private void OnEnable()
 	{
-		if(SettingsManagerIdentity != null)
+		if(Identity != null)
 		{
 			Destroy(this.gameObject);
 			return;
 		}
 
-		SettingsManagerIdentity = this;
+		Identity = this;
 
-		if(FileProvider.IsFileExist("SavedSettings.json"))
+        GameSceneManager.Instance = GetData<GameSceneManager>();
+        if(GameSceneManager.Instance == null )
+        {
+            GameSceneManager.Instance = GameObject.FindObjectOfType<GameSceneManager>();
+        }
+        GameSceneManager.Instance.Init();
+       
+        CharacterManager.Instance = GetData<CharacterManager>();
+        if (CharacterManager.Instance == null)
+        {
+            CharacterManager.Instance = GameObject.FindObjectOfType<CharacterManager>();
+        }
+        CharacterManager.Instance.Init();
+
+
+        if (FileProvider.IsFileExist("SavedSettings.json"))
 		{
             SavedSettings = FileProvider.LoadObjectFromJSONFile<Settings>("SavedSettings.json");
         }
@@ -48,13 +53,25 @@ public class SettingsManager : MonoBehaviour
             FileProvider.SaveObjectToJSONFile<Settings>(DefaultSettings, "DefaultSettings.json");
         }
 
-		LoadSettings();
+        GameObject.Find("FPS Label").SetActive(SavedSettings.ShowFPS);
+
+        Load();
 
         DontDestroyOnLoad(this.gameObject);	
 	}
 
-	private void LoadSettings()
+	private void Load()
 	{
+        if (FileProvider.IsFileExist("SavedSettings.json"))
+        {
+            FileProvider.GetObjectFromJSONFile<Settings>(Identity.SavedSettings, "SavedSettings.json");
+        }
+        else
+        {
+            FileProvider.SaveObjectToJSONFile<Settings>(Identity.SavedSettings, "SavedSettings.json");
+            Identity.SavedSettings = Identity.DefaultSettings;
+        }
+
         AudioMixer.audioMixer.SetFloat("Music Volume", Mathf.Lerp(-80, 0, SavedSettings.MusicVolume));
         AudioMixer.audioMixer.SetFloat("FX Volume", Mathf.Lerp(-80, 0, SavedSettings.SoundVolume));
 
@@ -72,19 +89,33 @@ public class SettingsManager : MonoBehaviour
                 break;
         }
 
+
+
         Application.targetFrameRate = 60;
+    }
+
+    public void Save<T>(T objectToSave, string pathToFile = "SavedSettings.bf")
+    {
+        FileProvider.SaveToBFFile<T>(objectToSave, "SavedSettings.bf");
+    }
+
+    public T GetData<T>(string pathToFile = "SavedSettings.bf")
+    {
+        T data = FileProvider.LoadFromBFFile<T>(pathToFile);
+
+        return data != null ? data : default(T);
     }
 
     public void SetLanguageToEnglish()
     {
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[0];
-        SettingsManagerIdentity.SavedSettings.Language = Settings.SettingsLanguage.English;
+        Identity.SavedSettings.Language = Settings.SettingsLanguage.English;
     }
 
     public void SetLanguageToRussian()
     {
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[1];
-        SettingsManagerIdentity.SavedSettings.Language = Settings.SettingsLanguage.Russian;
+        Identity.SavedSettings.Language = Settings.SettingsLanguage.Russian;
     }
 
     public void Default()

@@ -2,49 +2,48 @@ using UnityEngine;
 
 public class GameSceneBehaviour : MonoBehaviour
 {
-	private GameSceneManager gameSceneManager;
-	private void Start()
-	{
-		gameSceneManager = FindObjectOfType<GameSceneManager>();
-	}
-	
 	public void LoadScene(int i)
 	{
-		gameSceneManager.LoadScene(i);
+        GameSceneManager.Instance.LoadScene(i);
+	}
+
+	public void LoadSavedScene()
+	{
+		GameSceneManager.Instance.LoadSavedScene();
 	}
 	
 	public void StartLoadScene()
 	{
-		gameSceneManager.StartLoadScene();
+		GameSceneManager.Instance.StartLoadScene();
 	}
 	
 	public void Restart()
 	{
-		gameSceneManager.Restart();
+		GameSceneManager.Instance.Restart();
 	}
 	
 	public void Resume()
 	{
-		gameSceneManager.Resume();
+		GameSceneManager.Instance.Resume();
 	}
 	
 	public void Pause()
 	{
-		gameSceneManager.Pause();
+		GameSceneManager.Instance.Pause();
 	}
 	
 	public void Quit()
 	{
-		gameSceneManager.Quit();
+		GameSceneManager.Instance.Quit();
 	}
 	
 	public void Next()
 	{
-		gameSceneManager.Next();
+		GameSceneManager.Instance.Next();
 	}
 	
 	public void Home()
 	{
-		gameSceneManager.Home();
+		GameSceneManager.Instance.Home();
 	}
 }

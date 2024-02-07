@@ -16,7 +16,7 @@ public class Weapon : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetAxis("Fire 1") > 0)
+        if (Input.GetAxis("Fire1") > 0)
         {
             if (!shooting)
             {

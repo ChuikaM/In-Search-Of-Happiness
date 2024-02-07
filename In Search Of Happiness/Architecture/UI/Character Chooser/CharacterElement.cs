@@ -7,6 +7,6 @@ public class CharacterElement : MonoBehaviour
     public void SelectCharacter()
     {
         CharacterChooser.Instance.SetActiveElements(false);
-
+        CharacterManager.Instance.SelectCharacter(character);
     }
 }

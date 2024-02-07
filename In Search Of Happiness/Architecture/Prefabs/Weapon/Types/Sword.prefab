@@ -45,4 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rapidityOfFire: 0.3
-  bulletGameObject: {fileID: 1558284151865534111}
+  bulletGameObject: {fileID: 3478796617625253108, guid: aa8e8291c54871a4e880451d19b0e74d, type: 3}

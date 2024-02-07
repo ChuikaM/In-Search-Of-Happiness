@@ -4,22 +4,17 @@ using UnityEngine.SceneManagement;
 
 public class GameSceneManager : MonoBehaviour
 {
-	public static GameSceneManager gameSceneManager;
+	public static GameSceneManager Instance;
 	public int SceneIndex = 0;
-	
-	private void Awake()
-	{
-		if(gameSceneManager != null)
-		{
-			Destroy(this.gameObject);
-			return;
-		}
-		else
-		{
-			gameSceneManager = this;
-			DontDestroyOnLoad(this.gameObject);
-		}
-	}
+
+    public void Init()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+    }
 	
     public void Restart()
     {		
@@ -28,6 +23,7 @@ public class GameSceneManager : MonoBehaviour
 	
 	public void Next()
     {
+        SettingsManager.Identity.Save(Instance);
         LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 	
@@ -35,6 +31,11 @@ public class GameSceneManager : MonoBehaviour
 	{
 		LoadScene(0);
 	}
+
+    public void LoadSavedScene()
+    {
+        Instance.LoadScene(Instance.SceneIndex);
+    }
 	
     public void LoadScene(int i)
     {

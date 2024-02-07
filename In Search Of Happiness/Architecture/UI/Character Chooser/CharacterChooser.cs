@@ -22,7 +22,7 @@ public class CharacterChooser : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetAxis("Show Character Chooser") > 0)
+        if(Input.GetAxis("ShowCharacterChooser") > 0)
         {
             SetActiveElements();
         }

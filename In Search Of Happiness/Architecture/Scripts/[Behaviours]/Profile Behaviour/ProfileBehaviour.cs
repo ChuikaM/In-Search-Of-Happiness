@@ -3,13 +3,12 @@ using UnityEngine.UI;
 
 public class ProfileBehaviour : MonoBehaviour
 {
-	private SettingsManager SettingsManagerIdentity;
-
 	[SerializeField] private Toggle ToggleFPS;
 
-	private void OnEnable()
+	private GameObject fpsLabel;
+
+    private void OnEnable()
 	{
-		SettingsManagerIdentity = FindObjectOfType<SettingsManager>();
         Load();
 	}
 
@@ -19,18 +18,21 @@ public class ProfileBehaviour : MonoBehaviour
 		{
 			return;
 		}	
-		ToggleFPS.isOn = SettingsManagerIdentity.SavedSettings.ShowFPS;
+		ToggleFPS.isOn = SettingsManager.Identity.SavedSettings.ShowFPS;
+		fpsLabel = GameObject.Find("FPS Label");
+		fpsLabel.SetActive(SettingsManager.Identity.SavedSettings.ShowFPS);
     }
 
 	public void ToggleShowFPS(bool enabled)
 	{
-		SettingsManagerIdentity.SavedSettings.ShowFPS = enabled;
-        SettingsManagerIdentity.FPSLabel.SetActive(SettingsManagerIdentity.SavedSettings.ShowFPS);
+        SettingsManager.Identity.SavedSettings.ShowFPS = enabled;
+        fpsLabel.SetActive(enabled);
     }
 	
 	public void Default()
 	{
-		SettingsManagerIdentity.SavedSettings.ShowFPS = SettingsManagerIdentity.DefaultSettings.ShowFPS;
-	}	
+        SettingsManager.Identity.SavedSettings.ShowFPS = SettingsManager.Identity.DefaultSettings.ShowFPS;
+        fpsLabel.SetActive(SettingsManager.Identity.DefaultSettings.ShowFPS);
+    }	
 }
 	

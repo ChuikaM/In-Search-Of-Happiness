@@ -33,6 +33,7 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
 	{
         rigidbody2D.velocity = new Vector2(movementX * target.Speed, rigidbody2D.velocity.y);
+		rigidbody2D.WakeUp();
     }
 
 	private void MovementLogic()

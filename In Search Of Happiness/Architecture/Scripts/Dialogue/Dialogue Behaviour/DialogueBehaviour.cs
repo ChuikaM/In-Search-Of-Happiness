@@ -1,53 +1,51 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DialogueBehaviour : MonoBehaviour
 {
     [SerializeField] private TMPro.TextMeshProUGUI nameOfTeller;
-    [SerializeField] private TMPro.TextMeshProUGUI nameOfDialogue;
-    [SerializeField] private GameObject buttonNext;
+    [SerializeField] private TMPro.TextMeshProUGUI textOfDialogue;
+    [SerializeField][Min(0)] private float timeToDisappearDialogueBox = 2;
+    [SerializeField][Min(0)] private float timeToShowACharacter = 0.05f;
 
-    Queue<Dialogue> dialogues = new Queue<Dialogue>();
-    string textOfDialogue;
-
-    public void PrepareForDialogue(List<Dialogue> dialogues)
+    public void PrepareForDialogue(Dialogue dialogue)
     {
-        this.dialogues.Clear();
-        foreach (Dialogue dialogue in dialogues)
-        {
-            this.dialogues.Enqueue(dialogue);
-        }
         nameOfTeller.enabled = true;
-        nameOfDialogue.enabled = true;
-        buttonNext.SetActive(true);
-        NextDialogue();
+        textOfDialogue.enabled = true;
+        ShowDialogue(dialogue);
     }
 
-    public void NextDialogue()
+    private void ShowDialogue(Dialogue dialogue)
     {
-        if(dialogues.Count == 0)
-        {
-            nameOfTeller.enabled = false;
-            nameOfDialogue.enabled = false;
-            buttonNext.SetActive(false);
-            return;
-        }
-
-        Dialogue dialogue = dialogues.Dequeue();
-        nameOfTeller.text = dialogue.NameOfTeller;
-
-        textOfDialogue = dialogue.Next;
-        StartCoroutine(nameof(ShowDialogue));
+        StartCoroutine(ShowDialogueTellerName(dialogue));       
     }
 
-    IEnumerator ShowDialogue()
-    {           
-        foreach(char ch in textOfDialogue)
+    IEnumerator ShowDialogueTellerName(Dialogue dialogue)
+    {
+        nameOfTeller.text = "";
+        foreach (char ch in dialogue.NameOfTeller.ToCharArray())
         {
-            textOfDialogue += ch;
-            yield return null;
+            nameOfTeller.text += ch;
+            yield return new WaitForSeconds(timeToShowACharacter);
         }
-        yield return null;
+        StartCoroutine(ShowDialogueTellerText(dialogue));
+    }
+
+    IEnumerator ShowDialogueTellerText(Dialogue dialogue)
+    {
+        textOfDialogue.text = "";
+        foreach (char ch in dialogue.Text.ToCharArray())
+        {
+            textOfDialogue.text += ch;
+            yield return new WaitForSeconds(timeToShowACharacter);
+        }
+        yield return new WaitForSeconds(timeToDisappearDialogueBox);
+        DisappearDialogue();
+    }
+
+    private void DisappearDialogue()
+    {
+        nameOfTeller.enabled = false;
+        textOfDialogue.enabled = false;
     }
 }
