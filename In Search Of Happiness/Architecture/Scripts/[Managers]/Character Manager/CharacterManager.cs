@@ -21,7 +21,7 @@ public class CharacterManager : MonoBehaviour
     public void AddNewCharacter(GameObject character)
     {
         characters.Add(character);
-        SettingsManager.Identity.Save(characters);
+        SettingsManager.Identity.SaveToBF(characters);
     }
 
     public void SelectCharacter(GameObject character)

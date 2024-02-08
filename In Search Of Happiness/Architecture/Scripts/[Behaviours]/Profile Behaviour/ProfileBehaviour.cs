@@ -5,8 +5,6 @@ public class ProfileBehaviour : MonoBehaviour
 {
 	[SerializeField] private Toggle ToggleFPS;
 
-	private GameObject fpsLabel;
-
     private void OnEnable()
 	{
         Load();
@@ -19,20 +17,21 @@ public class ProfileBehaviour : MonoBehaviour
 			return;
 		}	
 		ToggleFPS.isOn = SettingsManager.Identity.SavedSettings.ShowFPS;
-		fpsLabel = GameObject.Find("FPS Label");
-		fpsLabel.SetActive(SettingsManager.Identity.SavedSettings.ShowFPS);
+		SettingsManager.Identity.FPSLabelGameObject.SetActive(SettingsManager.Identity.SavedSettings.ShowFPS);		
     }
 
 	public void ToggleShowFPS(bool enabled)
 	{
         SettingsManager.Identity.SavedSettings.ShowFPS = enabled;
-        fpsLabel.SetActive(enabled);
+        SettingsManager.Identity.FPSLabelGameObject.SetActive(enabled);
+        SettingsManager.Identity.SaveToJSON<Settings>(SettingsManager.Identity.SavedSettings, "SavedSettings.json");
     }
 	
 	public void Default()
 	{
         SettingsManager.Identity.SavedSettings.ShowFPS = SettingsManager.Identity.DefaultSettings.ShowFPS;
-        fpsLabel.SetActive(SettingsManager.Identity.DefaultSettings.ShowFPS);
+        SettingsManager.Identity.FPSLabelGameObject.SetActive(SettingsManager.Identity.DefaultSettings.ShowFPS);
+        SettingsManager.Identity.SaveToJSON<Settings>(SettingsManager.Identity.DefaultSettings, "SavedSettings.json");
     }	
 }
 	

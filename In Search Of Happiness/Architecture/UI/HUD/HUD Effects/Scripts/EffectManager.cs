@@ -49,7 +49,7 @@ public class EffectManager : MonoBehaviour
             if (effect.gameObject.name == name)
             {
                 animator = effect.GetComponent<Animator>();
-                animator.Play(name, 0, -1);
+                animator.Play(name, -1, 0f);
             }
         }
     }

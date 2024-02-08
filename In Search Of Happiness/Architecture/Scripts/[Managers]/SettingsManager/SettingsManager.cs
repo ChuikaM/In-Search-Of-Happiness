@@ -8,6 +8,8 @@ public class SettingsManager : MonoBehaviour
     public Settings SavedSettings;
     public Settings DefaultSettings;
 
+    public GameObject FPSLabelGameObject;
+
     [SerializeField] private AudioMixerGroup AudioMixer;
 
     private void OnEnable()
@@ -37,23 +39,21 @@ public class SettingsManager : MonoBehaviour
 
         if (FileProvider.IsFileExist("SavedSettings.json"))
 		{
-            SavedSettings = FileProvider.LoadObjectFromJSONFile<Settings>("SavedSettings.json");
+            SavedSettings = FileProvider.LoadFromJSONFile<Settings>("SavedSettings.json");
         }
 		else
 		{
-			FileProvider.SaveObjectToJSONFile<Settings>(SavedSettings, "SavedSettings.json");
+			FileProvider.SaveToJSONFile<Settings>(SavedSettings, "SavedSettings.json");
 		}
 
 		if(FileProvider.IsFileExist("DefaultSettings.json"))
 		{
-			DefaultSettings = FileProvider.LoadObjectFromJSONFile<Settings>("DefaultSettings.json");
+			DefaultSettings = FileProvider.LoadFromJSONFile<Settings>("DefaultSettings.json");
 		}
         else
         {
-            FileProvider.SaveObjectToJSONFile<Settings>(DefaultSettings, "DefaultSettings.json");
+            FileProvider.SaveToJSONFile<Settings>(DefaultSettings, "DefaultSettings.json");
         }
-
-        GameObject.Find("FPS Label").SetActive(SavedSettings.ShowFPS);
 
         Load();
 
@@ -64,11 +64,11 @@ public class SettingsManager : MonoBehaviour
 	{
         if (FileProvider.IsFileExist("SavedSettings.json"))
         {
-            FileProvider.GetObjectFromJSONFile<Settings>(Identity.SavedSettings, "SavedSettings.json");
+            FileProvider.OverwriteJSONFile<Settings>(Identity.SavedSettings, "SavedSettings.json");
         }
         else
         {
-            FileProvider.SaveObjectToJSONFile<Settings>(Identity.SavedSettings, "SavedSettings.json");
+            FileProvider.SaveToJSONFile<Settings>(Identity.SavedSettings, "SavedSettings.json");
             Identity.SavedSettings = Identity.DefaultSettings;
         }
 
@@ -94,9 +94,14 @@ public class SettingsManager : MonoBehaviour
         Application.targetFrameRate = 60;
     }
 
-    public void Save<T>(T objectToSave, string pathToFile = "SavedSettings.bf")
+    public void SaveToBF<T>(T objectToSave, string pathToFile = "SavedSettings.bf")
     {
-        FileProvider.SaveToBFFile<T>(objectToSave, "SavedSettings.bf");
+        FileProvider.SaveToBFFile<T>(objectToSave, pathToFile);
+    }
+    
+    public void SaveToJSON<T>(T objectToSave, string pathToFile = "SavedSettings.json")
+    {
+        FileProvider.SaveToJSONFile<T>(objectToSave, pathToFile);
     }
 
     public T GetData<T>(string pathToFile = "SavedSettings.bf")

@@ -2,13 +2,15 @@ using UnityEngine;
 
 public class DialogueTrigger : MonoBehaviour
 {
-    [SerializeField][TextArea] private Dialogue dialogue;
+    [SerializeField] private Dialogue dialogue;
+    [SerializeField] private bool autoShow = false;
+
     private bool visiting = false;
     private bool selecting = false;
 
     private void Update()
     {
-        if(Input.GetAxis("ShowDialogue") > 0)
+        if(Input.GetAxis("ShowDialogue") > 0 && !autoShow)
         {
             selecting = true;
         }
@@ -20,10 +22,14 @@ public class DialogueTrigger : MonoBehaviour
         {
             HUDMenuManager.SetActiveMenu("Dialogue Suggest", false);
         }
-        if (collision.gameObject.GetComponent<Player>() != null && !visiting)
+        else
         {
             HUDMenuManager.SetActiveMenu("Dialogue Suggest");
-            if (selecting)
+        }
+
+        if (collision.gameObject.GetComponent<Player>() != null && !visiting)
+        {  
+            if (selecting || autoShow)
             {
                 visiting = true;
                 selecting = false;

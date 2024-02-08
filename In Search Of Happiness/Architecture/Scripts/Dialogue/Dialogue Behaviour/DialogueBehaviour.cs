@@ -5,7 +5,6 @@ public class DialogueBehaviour : MonoBehaviour
 {
     [SerializeField] private TMPro.TextMeshProUGUI nameOfTeller;
     [SerializeField] private TMPro.TextMeshProUGUI textOfDialogue;
-    [SerializeField][Min(0)] private float timeToDisappearDialogueBox = 2;
     [SerializeField][Min(0)] private float timeToShowACharacter = 0.05f;
 
     public void PrepareForDialogue(Dialogue dialogue)
@@ -39,7 +38,7 @@ public class DialogueBehaviour : MonoBehaviour
             textOfDialogue.text += ch;
             yield return new WaitForSeconds(timeToShowACharacter);
         }
-        yield return new WaitForSeconds(timeToDisappearDialogueBox);
+        yield return new WaitForSeconds(dialogue.TimeToDisappearDialogueBox);
         DisappearDialogue();
     }
 

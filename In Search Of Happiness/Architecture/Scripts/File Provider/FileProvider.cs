@@ -6,7 +6,7 @@ public class FileProvider
 {
     public static string DefaultApplicationPersistentDataPath = Application.persistentDataPath + "/";
 
-    public static void SaveObjectToJSONFile<T>(T data, string path, FileMode filemode = FileMode.Create)
+    public static void SaveToJSONFile<T>(T data, string path, FileMode filemode = FileMode.Create)
     {
         FileStream fs = null;
         try
@@ -58,14 +58,14 @@ public class FileProvider
         return "";
     }
 
-    public static T LoadObjectFromJSONFile<T>(string pathToFile)
+    public static T LoadFromJSONFile<T>(string pathToFile)
     {
         string jsonFile = LoadJSONFileAsString(pathToFile);
         if (jsonFile == "") return default;
         return JsonUtility.FromJson<T>(jsonFile);
     }
 
-    public static void GetObjectFromJSONFile<T>(T Object,string pathToFile)
+    public static void OverwriteJSONFile<T>(T Object,string pathToFile)
     {
         string jsonFile = LoadJSONFileAsString(pathToFile);
         if (jsonFile == "") return;

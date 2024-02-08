@@ -10,7 +10,8 @@ public class CharacterChooser : MonoBehaviour
 
     private void OnEnable()
     {
-        if(Instance == null)
+       
+        if (Instance == null)
         {
             Instance = this;
         }
@@ -20,11 +21,28 @@ public class CharacterChooser : MonoBehaviour
         }
     }
 
+    private void OnLevelWasLoaded(int level)
+    {
+        if (level > 0 &&
+           level != UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings - 1)
+        {
+            showing = true;
+        }
+        else
+        {
+            showing = false;
+        }
+    }
+
     private void Update()
     {
-        if(Input.GetAxis("ShowCharacterChooser") > 0)
+        if(Input.GetAxis("ShowCharacterChooser") > 0 && showing)
         {
             SetActiveElements();
+        }
+        else
+        {
+            SetActiveElements(false);
         }
     }
 

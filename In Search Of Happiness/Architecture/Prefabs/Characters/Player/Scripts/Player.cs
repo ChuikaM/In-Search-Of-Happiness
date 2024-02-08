@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(BoxCollider2D))]
 [RequireComponent(typeof(Target))]
 public class Player : MonoBehaviour
 {
@@ -10,8 +11,9 @@ public class Player : MonoBehaviour
 	private Animator animator;
 
     private Rigidbody2D rigidbody2D;
+	private BoxCollider2D boxCollider2D;
 
-	private Target target;
+    private Target target;
 
 	private bool isFlip = false;
 	private bool onGround = false;
@@ -22,6 +24,7 @@ public class Player : MonoBehaviour
 	{
 		gameObject.TryGetComponent<Animator>(out animator);
         gameObject.TryGetComponent<Rigidbody2D>(out rigidbody2D);
+        gameObject.TryGetComponent<BoxCollider2D>(out boxCollider2D);
         gameObject.TryGetComponent<Target>(out target);
     }
 
@@ -84,7 +87,8 @@ public class Player : MonoBehaviour
 
     private void Jump()
 	{
-		if (Math.Abs(rigidbody2D.velocity.y) < 0.05f || onGround)
+		Collider2D collider = Physics2D.OverlapBox(new Vector2(boxCollider2D.bounds.max.x, boxCollider2D.bounds.max.y), new Vector2(boxCollider2D.size.x, 1), 0);
+		if ((Math.Abs(rigidbody2D.velocity.y) < 0.05f && collider == null) || onGround)
 		{
             rigidbody2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 			onGround = false;

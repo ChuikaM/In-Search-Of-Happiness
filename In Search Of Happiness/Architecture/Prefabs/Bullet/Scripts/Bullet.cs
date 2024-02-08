@@ -4,7 +4,8 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     [SerializeField][Min(0)] private float shootForce;
-    private Rigidbody2D rigidbody2D;
+    [SerializeField][Min(0)] private float timeToDestroy;
+    private new Rigidbody2D rigidbody2D;
     private void OnEnable()
     {
         TryGetComponent<Rigidbody2D>(out rigidbody2D);
@@ -12,5 +13,6 @@ public class Bullet : MonoBehaviour
         {
             rigidbody2D.velocity = transform.right * shootForce;
         }
+        Destroy(gameObject, timeToDestroy);
     }
 }

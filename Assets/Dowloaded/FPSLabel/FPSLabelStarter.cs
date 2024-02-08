@@ -11,7 +11,9 @@ public static class FPSLabelStarter
 		{
 			GameObject fpsLabelGO = new GameObject("FPS Label");
 			fpsLabelGO.AddComponent<FPSLabel>();
-		}
+			SettingsManager.Identity.FPSLabelGameObject = fpsLabelGO;
+
+        }
 	}
 }
 //#endif

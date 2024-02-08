@@ -4,7 +4,9 @@ using UnityEngine;
 public class Dialogue
 {
     public string NameOfTeller;
-    [SerializeField] private string text;
+    [SerializeField][TextArea(3, 5)] private string text;
+    [SerializeField] private float timeToDisappearDialogueBox = 2;
 
     public string Text => text;
+    public float TimeToDisappearDialogueBox => timeToDisappearDialogueBox;
 }

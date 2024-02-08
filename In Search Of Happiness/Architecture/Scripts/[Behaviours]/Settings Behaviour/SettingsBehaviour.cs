@@ -14,18 +14,18 @@ public class SettingsBehaviour : MonoBehaviour
 	{
 		if(FileProvider.IsFileExist("SavedSettings.json"))
 		{
-			FileProvider.GetObjectFromJSONFile<Settings>(SettingsManagerIdentity.SavedSettings, "SavedSettings.json");
+			FileProvider.OverwriteJSONFile<Settings>(SettingsManagerIdentity.SavedSettings, "SavedSettings.json");
 		}
 		else
 		{
-			FileProvider.SaveObjectToJSONFile<Settings>(SettingsManagerIdentity.SavedSettings,"SavedSettings.json");
+			FileProvider.SaveToJSONFile<Settings>(SettingsManagerIdentity.SavedSettings,"SavedSettings.json");
 			SettingsManagerIdentity.SavedSettings = SettingsManagerIdentity.DefaultSettings;
 		}
 	}
 
 	public void Save()
 	{
-		FileProvider.SaveObjectToJSONFile<Settings>(SettingsManagerIdentity.SavedSettings,"SavedSettings.json");
+		FileProvider.SaveToJSONFile<Settings>(SettingsManagerIdentity.SavedSettings,"SavedSettings.json");
 	}
 }
 	

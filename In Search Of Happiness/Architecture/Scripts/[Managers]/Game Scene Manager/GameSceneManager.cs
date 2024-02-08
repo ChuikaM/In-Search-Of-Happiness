@@ -23,13 +23,13 @@ public class GameSceneManager : MonoBehaviour
 	
 	public void Next()
     {
-        SettingsManager.Identity.Save(Instance);
+        SettingsManager.Identity.SaveToBF(Instance);
         LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 	
 	public void Home()
 	{
-		LoadScene(0);
+        LoadScene(0);
 	}
 
     public void LoadSavedScene()
@@ -39,7 +39,7 @@ public class GameSceneManager : MonoBehaviour
 	
     public void LoadScene(int i)
     {
-		if(SceneIndex > SceneManager.sceneCountInBuildSettings)
+        if (SceneIndex > SceneManager.sceneCountInBuildSettings)
 		{
 			SceneIndex = SceneManager.sceneCountInBuildSettings;
 		}
