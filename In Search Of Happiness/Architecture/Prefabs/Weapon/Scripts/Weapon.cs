@@ -1,10 +1,13 @@
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
-{ 
+{
+    public float RapidityOfFire => rapidityOfFire;
+
     [SerializeField][Min(0)] private float rapidityOfFire;
     [SerializeField] private GameObject bulletGameObject;
-    
+    [SerializeField] private AudioSource audioSource;
+
     private Transform shootTransform;
 
     private bool shooting = false;
@@ -30,5 +33,7 @@ public class Weapon : MonoBehaviour
     {
         shooting = false;
         Instantiate(bulletGameObject, shootTransform.position, shootTransform.rotation);
+        audioSource.Play();
+
     }
 }

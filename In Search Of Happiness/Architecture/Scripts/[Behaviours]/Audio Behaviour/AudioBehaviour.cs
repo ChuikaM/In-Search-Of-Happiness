@@ -18,19 +18,21 @@ public class AudioBehaviour : MonoBehaviour
 
     private void Load()
 	{
-        if(SliderMusicVolume == null || SliderFXVolume == null)
+        if(SliderMusicVolume != null)
         {
-            return;
+            SliderMusicVolume.value = SettingsManagerIdentity.SavedSettings.MusicVolume;
         }
-		SliderMusicVolume.value = SettingsManagerIdentity.SavedSettings.MusicVolume;
-		SliderFXVolume.value = SettingsManagerIdentity.SavedSettings.SoundVolume;
+        if(SliderFXVolume != null)
+        {
+            SliderFXVolume.value = SettingsManagerIdentity.SavedSettings.SoundVolume;
+        }
 	}
 
     public void ChangeValueOfMusic(float volume)
     {
         if(AudioMixer != null)
         {
-            AudioMixer.audioMixer.SetFloat("Music Volume", Mathf.Lerp(-80,0,volume));
+            AudioMixer.audioMixer.SetFloat("Music Volume", Mathf.Lerp(-20,0,volume));
         }
         SettingsManagerIdentity.SavedSettings.MusicVolume = volume;
     }
@@ -39,7 +41,7 @@ public class AudioBehaviour : MonoBehaviour
     {
         if(AudioMixer != null)
         {
-            AudioMixer.audioMixer.SetFloat("FX Volume", Mathf.Lerp(-80,0,volume));
+            AudioMixer.audioMixer.SetFloat("FX Volume", Mathf.Lerp(-20,0,volume));
         }   
         SettingsManagerIdentity.SavedSettings.SoundVolume = volume;
     }	

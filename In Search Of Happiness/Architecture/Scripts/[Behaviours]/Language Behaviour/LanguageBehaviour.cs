@@ -1,8 +1,14 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LanguageBehaviour : MonoBehaviour
 {
-	private SettingsManager SettingsManagerIdentity;
+	public static bool selectedEnglish = false;
+
+    [SerializeField] private Toggle ToggleRussian;
+    [SerializeField] private Toggle ToggleEnglish;
+
+    private SettingsManager SettingsManagerIdentity;
 	private void OnEnable()
 	{
 		SettingsManagerIdentity = GameObject.FindObjectOfType<SettingsManager>();
@@ -20,23 +26,48 @@ public class LanguageBehaviour : MonoBehaviour
 		{
 			case Settings.SettingsLanguage.English:
 				SetLanguageToEnglish();
-            break;
+                selectedEnglish = true;
+                ToggleEnglish.isOn = true;
+                ToggleRussian.isOn = false;
+                break;
 
 			case Settings.SettingsLanguage.Russian:
 				SetLanguageToRussian();
-            break;
+                selectedEnglish = false;
+                ToggleEnglish.isOn = false;
+                ToggleRussian.isOn = true;
+                break;
 			default:
 				SettingsManagerIdentity.Default(); 
 			break;
 		}
     }
 
-	public void SetLanguageToEnglish()
+	public void SetLanguage(bool enabled)
+	{
+		if(!selectedEnglish)
+		{
+            SettingsManagerIdentity.SetLanguageToEnglish();
+            ToggleEnglish.isOn = true;
+            ToggleRussian.isOn = false;
+            selectedEnglish = true;
+        }
+		else
+		{
+            SettingsManagerIdentity.SetLanguageToRussian();
+            ToggleEnglish.isOn = false;
+            ToggleRussian.isOn = true;
+            selectedEnglish = false;
+        }
+    }
+
+    public void SetLanguageToEnglish()
 	{
         SettingsManagerIdentity.SetLanguageToEnglish();
     }
-	
-	public void SetLanguageToRussian()
+
+
+    public void SetLanguageToRussian()
 	{
         SettingsManagerIdentity.SetLanguageToRussian();
     }

@@ -22,6 +22,8 @@ public class CharacterElement : MonoBehaviour
 
         GameObject playerGameObject = GameObject.FindObjectOfType<Player>().gameObject;
         GameObject clone = Instantiate(character, playerGameObject.transform.position, playerGameObject.transform.rotation);
+        clone.GetComponent<Player>().IsFlip = clone.transform.rotation.y < 0 ? true : false;
+
         CameraFollower.Instance.TargetTransform = clone.transform;
         Destroy(playerGameObject);
     }

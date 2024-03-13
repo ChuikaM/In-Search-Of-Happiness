@@ -33,6 +33,7 @@ public class DialogueTrigger : MonoBehaviour
             {
                 visiting = true;
                 selecting = false;
+                HUDMenuManager.SetActiveMenu("Dialogue");
                 FindObjectOfType<DialogueBehaviour>().PrepareForDialogue(dialogue);
             }
         }

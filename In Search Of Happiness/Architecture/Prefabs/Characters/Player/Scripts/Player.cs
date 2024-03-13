@@ -6,6 +6,8 @@ using System;
 [RequireComponent(typeof(Target))]
 public class Player : MonoBehaviour
 {
+    public bool IsFlip = false;
+
     [SerializeField] private float jumpForce = 20f;
 
 	private Animator animator;
@@ -14,8 +16,7 @@ public class Player : MonoBehaviour
 	private BoxCollider2D boxCollider2D;
 
     private Target target;
-
-	private bool isFlip = false;
+	
 	private bool onGround = false;
 
 	private float movementX = 0;
@@ -26,12 +27,28 @@ public class Player : MonoBehaviour
         gameObject.TryGetComponent<Rigidbody2D>(out rigidbody2D);
         gameObject.TryGetComponent<BoxCollider2D>(out boxCollider2D);
         gameObject.TryGetComponent<Target>(out target);
+
+		target.OnDead += Dead;
     }
 
-	private void Update()
+    private void Dead()
+    {
+		GameSceneManager.Instance.Restart();
+    }
+
+    private void Update()
 	{
 		MovementLogic();
-	}
+        if (Input.GetAxis("Fire1") > 0)
+		{
+            animator?.SetBool("Attacking", true);
+        }
+		else
+		{
+            animator?.SetBool("Attacking", false);
+        }
+
+    }
 
     private void FixedUpdate()
 	{
@@ -43,19 +60,17 @@ public class Player : MonoBehaviour
 	{
         movementX = Input.GetAxisRaw("Horizontal");
 
-        animator?.SetFloat("Movement", Mathf.Abs(movementX));
-        animator?.SetBool("Grounding", Mathf.Abs(rigidbody2D.velocity.y) < 0.05f);
-
         if (Input.GetAxisRaw("Jump") > 0)
         {
             Jump();
-        }
-
-		if(movementX > 0)
-		{
-			goRight() ;
 		}
-		else if(movementX < 0)
+		
+
+		if (movementX > 0)
+		{
+			goRight();
+		}
+		else if (movementX < 0)
 		{
 			goLeft();
 		}
@@ -63,25 +78,30 @@ public class Player : MonoBehaviour
 		{
 			movementX = 0;
 		}
+
+        animator?.SetFloat("Movement", Mathf.Abs(movementX));
+        animator?.SetBool("Grounding", Mathf.Abs(rigidbody2D.velocity.y) < 0.5f);
     }
 
-    private void goRight()
+	private void goRight()
 	{
         movementX = 1f;
-        if (isFlip)
+
+        if (IsFlip)
         {
             transform.Rotate(0, 180, 0);
-            isFlip = false;
+            IsFlip = false;
         }
     }
 
 	private void goLeft()
 	{
         movementX = -1f;
-        if (!isFlip)
+
+        if (!IsFlip)
         {
             transform.Rotate(0, 180, 0);
-            isFlip = true;
+            IsFlip = true;
         }
     }
 
@@ -90,8 +110,13 @@ public class Player : MonoBehaviour
 		Collider2D collider = Physics2D.OverlapBox(new Vector2(boxCollider2D.bounds.max.x, boxCollider2D.bounds.max.y), new Vector2(boxCollider2D.size.x, 1), 0);
 		if ((Math.Abs(rigidbody2D.velocity.y) < 0.05f && collider == null) || onGround)
 		{
+            animator?.SetBool("Grounding", true);
             rigidbody2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 			onGround = false;
+        }
+		else
+		{
+            animator?.SetBool("Grounding", false);
         }
 	}
 

@@ -34,7 +34,7 @@ Transform:
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5974711160798832160}
+  - {fileID: 6720137030494681200}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &996159887358376870
@@ -173,6 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd3ecf75622d1c84f875b4281ab0a4bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsFlip: 0
   jumpForce: 20
 --- !u!114 &6056654758867527247
 MonoBehaviour:
@@ -186,10 +187,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd5cbd0ee3218194db881dd806523d50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterType: 0
   health: 100
   protection: 0
   speed: 8
---- !u!1001 &2533573830959799656
+--- !u!1001 &3207063052373001016
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -199,7 +201,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1558284151865534111, guid: 951c561aefc43b24e98641642f306cbd, type: 3}
       propertyPath: m_Name
-      value: Sword
+      value: Sword Player
       objectReference: {fileID: 0}
     - target: {fileID: 8197536333781826376, guid: 951c561aefc43b24e98641642f306cbd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -246,8 +248,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 951c561aefc43b24e98641642f306cbd, type: 3}
---- !u!4 &5974711160798832160 stripped
+--- !u!4 &6720137030494681200 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8197536333781826376, guid: 951c561aefc43b24e98641642f306cbd, type: 3}
-  m_PrefabInstance: {fileID: 2533573830959799656}
+  m_PrefabInstance: {fileID: 3207063052373001016}
   m_PrefabAsset: {fileID: 0}

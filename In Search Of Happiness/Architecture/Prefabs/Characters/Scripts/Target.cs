@@ -2,12 +2,19 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
+    public enum CharacterType { Player, Bot };
+    public CharacterType CharacterTypeOfGameObject => characterType;
+    public System.Action OnDead;
+    public System.Action<int> OnHPChanged;
+
+    [SerializeField] private CharacterType characterType;
     [SerializeField] private int health;
     [SerializeField] private int protection;
     [SerializeField] private float speed;
 
     public float Speed => speed;
     public int Health => health;
+
 
     private int maxHealth;
     private int maxProtection;
@@ -29,7 +36,14 @@ public class Target : MonoBehaviour
         }
         health -= damage;
 
-        if(IsDead())
+        if(IsPlayerComponentExists())
+        {
+            EffectManager.PlayEffect("Injure Effect");
+        }
+
+        OnHPChanged?.Invoke(health);
+
+        if (IsDead())
         {
             Kill();
         }
@@ -39,6 +53,7 @@ public class Target : MonoBehaviour
     {
         protection = 0;
         health = 0;
+        OnDead?.Invoke();
     }
 
     public void SetProtectionToMax()
@@ -65,6 +80,7 @@ public class Target : MonoBehaviour
         if(health + healCount <= maxHealth)
         {
             health += healCount;
+            OnHPChanged?.Invoke(health);
         }
     }
 
@@ -85,5 +101,23 @@ public class Target : MonoBehaviour
     public bool IsDead()
     {
         return health <= 0;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.CompareTag("KillArea"))
+        {
+            OnDead?.Invoke();
+        }
+    }
+
+    public bool IsPlayerComponentExists()
+    {
+        return gameObject.GetComponent<Player>() != null;
+    }
+
+    public bool IsBotComponentExists()
+    {
+        return gameObject.GetComponent<Bot>() != null;
     }
 }
